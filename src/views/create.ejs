@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('partials/head')%>
+    <title>Create new contact form </title>
+
+<body>
+    <%- include('partials/navigations')%>
+    <div class="container">
+  <h1>Create</h1>
+  <form action = "/users" method="POST">
+    <input
+        type="text"
+        placeholder="Add email"
+        class="form-control-my-2"
+        name="email">
+        
+    <input
+    type="text"
+    placeholder="Add description"
+    class="form-control-my-2"
+    name="desc">
+    <button
+        class="btn btn-success btn-block"
+        type="submit">
+        Create
+    </button>
+  </form>
+  <a href="/users" class="btn btn-dark btn-block">Back to users </a>
+</div>
+  <%- include('partials/footers')%>
+</body>
+
+</html>

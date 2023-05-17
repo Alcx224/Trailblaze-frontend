@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('partials/head')%>
+    <title>User Update </title>
+</head>
+
+<body>
+    <%- include('partials/navigations')%>
+    <div class="container">
+  <h1>User Details</h1>
+  <% if (error) { %>
+   <p>
+    <%= message %>
+   </p>
+   <a href="/users" class="btn btn-dark btn-block">Back to users </a>
+  <% } %>
+  <% if (!error) { %>
+    <form id="editForm" data-id="<%= User.id %>">
+        <input
+        type="text"
+        class="form-control-my-2"
+        name="email"
+        value="<%= User.email %>"
+        id="emailInput"
+        >
+        <input
+        type="text"
+        class="form-control-my-2"
+        name="desc"
+        value="<%= User.desc %>"
+        id="descInput"
+        >
+        <button
+            class="btn btn-warning btn-block"
+            type="submit"
+        >Edit</button>
+    </form>
+    <button 
+    class="btn btn-danger btn-sm"
+    id="btnDelete"
+    data-id="<%= User.id %>"
+    >  Deleted
+    </button>
+
+    <a href="/users" class="btn btn-dark btn-block">Back to users </a>
+  <% } %>
+  
+</div>
+  <%- include('partials/footers')%>
+</body>
+
+
+<script>
+    const btnDelete = document.querySelector('#btnDelete')
+
+    btnDelete.addEventListener('click', async () => {
+        const id = btnDelete.dataset.id
+        try {
+            const data = await fetch(`/users/${id}`, {
+                method: 'delete'
+            })
+            const ans = await data.json()
+            
+            if(ans.status){
+                window.location.href = '/users'
+            }else{
+                console.log(ans)
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    const editForm = document.querySelector("#editForm")
+
+    editForm = addEventListener('submit', async(e) => {
+        e.preventDefault()
+       const email = editForm.elements['email'].value
+       const desc = document.querySelector('#descInput').value
+       const id = editForm.dataset.id
+
+       try {
+            const data = await fetch(`/users/${id}`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, desc})
+            })
+            const res = await data.json()
+
+            if(res.status){
+                window.location.href = '/users'
+            }else{
+                console.log(res)
+            }
+       } catch (error) {
+        console.log(error)
+       }
+      
+    })
+
+</script>
+</html>
